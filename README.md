@@ -25,11 +25,11 @@
 ***
 와이어프레임
 
-![image (1).png](../Users/82102/Downloads/image%20%281%29.png)
-![image (2).png](../Users/82102/Downloads/image%20%282%29.png)
+![Image](https://github.com/user-attachments/assets/5c593282-83d7-481c-9db1-b5c18bad4dac)
+![Image](https://github.com/user-attachments/assets/f85137b9-9cfd-49ae-81be-83559597dc71)
 
 ERD
 
-![image (3).png](../Users/82102/Downloads/image%20%283%29.png)
+![Image](https://github.com/user-attachments/assets/615573bf-5cfc-4826-9e73-03c85349be78)
 
 API
