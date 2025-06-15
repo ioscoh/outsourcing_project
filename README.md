@@ -1,16 +1,10 @@
 # ✒️Outsourcing Project
-
-***
 아웃소싱 프로젝트
 
 # 📌프로젝트 소개
-
-***
 기업용 태스크 관리 시스템 (TaskFlow)의 백엔드 개발
 
 ## 💡핵심 기능
-
-***
 1. 회원가입 / 로그인 : 회원 CRUD, 로그인, 회원탈퇴
 2. 태스크 관리 : 태스크 CRUD(Soft Delete 처리), 상태 변경
 3. 댓글 관리 : 댓글 CRUD(검색 기능)
@@ -21,8 +15,6 @@
 `Java` `Spring Boot` `Github` `MySQL` `JPA` `JWT`
 
 # 📃설계
-
-***
 와이어프레임
 
 ![Image](https://github.com/user-attachments/assets/5c593282-83d7-481c-9db1-b5c18bad4dac)
