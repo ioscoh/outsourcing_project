@@ -83,3 +83,27 @@ src/
             │
             └── OutsourcingProjectApplication.java
 ```
+## 환경변수 설정
+1. 환경변수 설정하기
+   ![Image](https://github.com/user-attachments/assets/27627c32-160d-4514-a4d9-b455e8dd9d78)
+
+2. 옵션 추가하기
+   `Build and run` 항목의 `modify options` 선택
+
+아래 내용 체크 표시
+````
+Environment variables
+````
+
+환경변수
+Environment variables 의 파일모양 📄 선택
++ 눌러서 아래 내용 추가
+````
+MYSQL_USERNAME = 유저이름
+MYSQL_PASSWORD = 비밀번호
+MYSQL_PORT = 포트번호
+MYSQL_DBNAME = DB이름
+SERVER_PORT = 포트번호
+JWT_SECRET_KEY = SecretKey3225345@DVA@34232asafdsv!
+````
+
