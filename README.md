@@ -23,17 +23,18 @@
 # 📃설계
 
 ***
-와이어프레임
+#### 와이어프레임
 
 ![Image](https://github.com/user-attachments/assets/5c593282-83d7-481c-9db1-b5c18bad4dac)
 ![Image](https://github.com/user-attachments/assets/f85137b9-9cfd-49ae-81be-83559597dc71)
 
-ERD
+#### ERD
 
 ![Image](https://github.com/user-attachments/assets/615573bf-5cfc-4826-9e73-03c85349be78)
 
-API
+#### API
 
+[Notion API](https://www.notion.so/teamsparta/API-2112dc3ef514804e8564e7e241dd8ab5?source=copy_link)
 
 ### 📁 Project Tree
 ```
