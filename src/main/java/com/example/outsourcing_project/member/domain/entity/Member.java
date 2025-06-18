@@ -1,18 +1,18 @@
 package com.example.outsourcing_project.member.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "members")
 public class Member {
+    //속
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,6 +41,12 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    //생
+    public Member() {
+
+    }
+
+    //기
     public enum Role {
         ADMIN, USER, MANAGER
     }
