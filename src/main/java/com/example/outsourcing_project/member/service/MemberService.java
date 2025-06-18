@@ -5,9 +5,12 @@ import com.example.outsourcing_project.global.exception.MemberError;
 import com.example.outsourcing_project.global.exception.MemberException;
 import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.member.dto.MemberJoinReqDto;
+import com.example.outsourcing_project.member.dto.MemberJoinResDto;
 import com.example.outsourcing_project.member.repository.MemberRepository;
+import com.example.outsourcing_project.task.domain.entity.Task;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 @Service
@@ -58,7 +61,7 @@ public class MemberService {
      *      1-6 이메일과 비밀번호의 형식이 올바르면 회원가입을 성골 하는 로직을 작성하기
      * 2.이메일과 비밀번호를 올바르게 입력된 값을 레퍼지토리에 저장합니다.
      */
-public void memberJoinService(MemberJoinReqDto memberJoinReqDto) {
+public MemberJoinResDto memberJoinService(MemberJoinReqDto memberJoinReqDto) {
     // 1-1 이메일과 비밀번호를 불러옵니다.
     String joinReqDtoUsername = memberJoinReqDto.getUsername();
     String joinResDtoEmail = memberJoinReqDto.getEmail();
@@ -91,6 +94,8 @@ public void memberJoinService(MemberJoinReqDto memberJoinReqDto) {
 
     // 2.이메일과 비밀번호를 올바르게 입력된 값을 레퍼지토리에 저장합니다.
     memberRepository.save(member);
+   //성공시 아래 로직 반환됩니다.
+    return new MemberJoinResDto(Task.Status.DONE, "회원가입 완료되었습니다.", member.getId());
 }
 
 

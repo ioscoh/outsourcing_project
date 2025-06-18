@@ -13,23 +13,26 @@ package com.example.outsourcing_project.member.dto;
 //}
 
 import com.example.outsourcing_project.global.exception.MemberError;
+import com.example.outsourcing_project.task.domain.entity.Task;
 import lombok.Getter;
 
 @Getter
 public class MemberJoinResDto {
 
     //속
-    private final MemberError memberError;
+    private final Task.Status status;
     private final String message;
+    private final Long id;
 
 
 
 
 
     //생
-    public MemberJoinResDto(MemberError memberError, String message) {
-        this.memberError = memberError;
+    public MemberJoinResDto(Task.Status status, String message, Long id) {
+        this.status = status;
         this.message = message;
+        this.id = id;
     }
 
     //기

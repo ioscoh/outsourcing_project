@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Table(name = "members")
@@ -41,9 +43,16 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    //생
-    public Member() {
+    @PrePersist
+    public void onCreat() {
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+    @PreUpdate
+    public void onUpdate() {
 
+        this.updatedAt = LocalDateTime.now(ZoneOffset.UTC);
     }
 
     //기
