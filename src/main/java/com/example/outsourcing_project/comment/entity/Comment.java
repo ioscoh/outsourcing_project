@@ -1,7 +1,7 @@
-package com.example.outsourcing_project.comment.domain.entity;
+package com.example.outsourcing_project.comment.entity;
 
 import com.example.outsourcing_project.member.domain.entity.Member;
-import com.example.outsourcing_project.task.domain.entity.Task;
+import com.example.outsourcing_project.task.entity.Task;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +36,7 @@ public class Comment {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    private LocalDateTime daletedAt;
+    private LocalDateTime deletedAt;
 
     @Column(nullable = false)
     private Boolean isDeleted = false;
