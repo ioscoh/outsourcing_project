@@ -1,6 +1,6 @@
 package com.example.outsourcing_project.task.service;
 
-import com.example.outsourcing_project.member.MemberRepository;
+import com.example.outsourcing_project.member.repository.MemberRepository;
 import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.task.domain.entity.Task;
 import com.example.outsourcing_project.task.dto.TaskReqDto;
