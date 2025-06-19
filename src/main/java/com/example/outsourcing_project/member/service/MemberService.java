@@ -5,17 +5,22 @@ import com.example.outsourcing_project.global.exception.MemberError;
 import com.example.outsourcing_project.global.exception.MemberException;
 import com.example.outsourcing_project.global.util.LoginJwtUtil;
 import com.example.outsourcing_project.member.domain.entity.Member;
-import com.example.outsourcing_project.member.dto.MemberJoinReqDto;
-import com.example.outsourcing_project.member.dto.MemberJoinResDto;
-import com.example.outsourcing_project.member.dto.MemberLoginReqDto;
-import com.example.outsourcing_project.member.dto.MemberLoginResDto;
+import com.example.outsourcing_project.member.dto.*;
 import com.example.outsourcing_project.member.repository.MemberRepository;
 import com.example.outsourcing_project.task.domain.entity.Task;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Optional;
 import java.util.regex.Pattern;
+
+import static com.example.outsourcing_project.global.util.LoginJwtUtil.BEARER_PREFIX;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class MemberService {
@@ -38,7 +43,9 @@ public class MemberService {
 
 
     //생
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, LoginJwtUtil loginJwtUtil) {
+    public MemberService(
+            MemberRepository memberRepository, PasswordEncoder passwordEncoder, LoginJwtUtil loginJwtUtil
+    ) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.loginJwtUtil = loginJwtUtil;
@@ -109,10 +116,10 @@ public MemberJoinResDto memberJoinService(MemberJoinReqDto memberJoinReqDto) {
 }
 
 
-    public MemberLoginResDto memberloginService(MemberLoginReqDto request) {
+    public MemberLoginResDto memberloginService(MemberLoginReqDto loginReqDto) {
 
-        String email = request.getEmail();
-        String password = request.getPassword();
+        String email = loginReqDto.getEmail();
+        String password = loginReqDto.getPassword();
 
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(
@@ -130,10 +137,35 @@ public MemberJoinResDto memberJoinService(MemberJoinReqDto memberJoinReqDto) {
         return new MemberLoginResDto(
                 HttpStatus.OK.value(), "로그인 완료되었습니다.", token, member.getId()
         );
-
     }
 
+    //회원 탈퇴(삭제) 서비스
+    @Transactional
+    public Member.MemberLeaveDto memberLeaveService(Long memberId, String bearerHeader) {
+        //데이터 준비
+        //토큰이 일치하는지
+        String token = bearerHeader.replaceFirst("(?i)^Bearer\\s+", "");
+        if (!loginJwtUtil.validateToken(token)) {
+            throw new MemberException(MemberError.INVALID_JWT);    // 401
+        }
+
+        //이 식별자 아이디와 삭제 자원 유저 식별자와 같은지
+        Long idInToken = loginJwtUtil.extractMemberId(token);
+        if (!idInToken.equals(memberId)) {
+            throw new MemberException(MemberError.NO_PERMISSION);  // 403
+        }
 
 
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MemberError.USER_NOT_FOUND));
 
+        member.setIsDeleted(true);
+        member.setDeletedAt(LocalDateTime.now(ZoneOffset.UTC));
+
+
+        Member.MemberLeaveDto memberLeaveDto = new Member.MemberLeaveDto(HttpStatus.OK.value(),
+                "회원탈퇴가 완료되었습니다.",
+                memberId);
+        return memberLeaveDto;
+    }
 }

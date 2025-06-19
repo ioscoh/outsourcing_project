@@ -56,10 +56,12 @@ public class MemberController {
 
     //회원 탈퇴(삭제) api
     @DeleteMapping("/{id}")
-    public void memberWithdrawalController(
-            @PathVariable MemberWithdrawalReqDto withdrawalReqDto
+    public ResponseEntity<Member.MemberLeaveDto> memberLeaveController(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String bearerHeader
     ) {
-
+        Member.MemberLeaveDto memberLeaveDto = memberService.memberLeaveService(id, bearerHeader);
+        return ResponseEntity.ok(memberLeaveDto);
 
     }
 
@@ -67,7 +69,3 @@ public class MemberController {
 
 
 }
-//   System.out.println("withdrawalReqDto = " + withdrawalReqDto);
-//String password = withdrawalReqDto.getPassword();
-//        System.out.println("password = " + password);
-//        return new ResponseEntity<>("탈퇴", HttpStatus.OK);

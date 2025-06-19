@@ -89,6 +89,23 @@ public class LoginJwtUtil {
         return extractAllClaims(token).get("auth", String.class);
     }
 
+
+    //id 를 바로 꺼내 주는 기능 입니다.
+    public Long extractMemberId(String bearerToken) {
+
+        String token = bearerToken.startsWith(BEARER_PREFIX)
+                ? bearerToken.substring(BEARER_PREFIX.length())
+                : bearerToken;
+
+        String subject = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+
+        return Long.valueOf(subject);   // Subject ->Long id
+    }
     /**
      * JWT 토큰에서 특정 역할이 포함되어 있는지 확인합니다.
      * @param token JWT 토큰

@@ -1,5 +1,6 @@
 package com.example.outsourcing_project.member.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,9 +45,6 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-
-
-
     @PrePersist
     public void onCreate() {
         LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
@@ -63,6 +61,27 @@ public class Member {
     public enum Role {
         ADMIN, USER, MANAGER
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class MemberLeaveDto {
+        //속
+        private int status; // 200
+        private String message; //탈퇴 완료 메세지
+        private Long id;
+
+        //생
+        public MemberLeaveDto(Member member, String message, Long id) {
+            this.id = member.getId();
+            this.message = getMessage();
+            this.status = getStatus();
+        }
+
+        //기
+
+    }
+
+
 
 
 }
