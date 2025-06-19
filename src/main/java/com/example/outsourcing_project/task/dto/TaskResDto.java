@@ -19,6 +19,7 @@ public class TaskResDto {
     private Long assigneeId;
     private Long authorId;
     private LocalDate dueDate;
+    private LocalDate startedAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -32,6 +33,7 @@ public class TaskResDto {
                 .authorId(task.getAuthor().getId())
                 .assigneeId(task.getAssignee() != null ? task.getAssignee().getId() : null)
                 .dueDate(task.getDueDate())
+                .startedAt(task.getStartedAt())
                 .createdAt(task.getCreatedAt())
                 .updatedAt(task.getUpdatedAt())
                 .build();

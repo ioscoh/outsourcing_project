@@ -46,6 +46,7 @@ public class TaskService {
                 .assignee(assignee)
                 .author(author)
                 .dueDate(dto.getDueDate())
+                .startedAt(dto.getStartedAt())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .isDeleted(false)
@@ -66,6 +67,7 @@ public class TaskService {
                 .assigneeId(task.getAssignee().getId())
                 .authorId(task.getAuthor().getId())
                 .dueDate(task.getDueDate())
+                .startedAt(task.getStartedAt())
                 .createdAt(task.getCreatedAt())
                 .updatedAt(task.getUpdatedAt())
                 .build();

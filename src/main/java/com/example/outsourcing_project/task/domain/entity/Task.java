@@ -46,7 +46,7 @@ public class Task {
     @Column(nullable = false)
     private Status status;
 
-    private LocalDateTime startedAt;
+    private LocalDate startedAt;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

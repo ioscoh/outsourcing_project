@@ -2,6 +2,9 @@ package com.example.outsourcing_project.task.controller;
 
 import com.example.outsourcing_project.task.domain.enums.Status;
 import com.example.outsourcing_project.task.dto.*;
+import com.example.outsourcing_project.task.dto.api.CreateApiResDto;
+import com.example.outsourcing_project.task.dto.api.ReadApiResDto;
+import com.example.outsourcing_project.task.dto.api.UpdateApiResDto;
 import com.example.outsourcing_project.task.dto.page.PagedTaskResDto;
 import com.example.outsourcing_project.task.dto.page.TaskSummaryResDto;
 import com.example.outsourcing_project.task.dto.status.TaskStatusUpdateReqDto;
@@ -11,7 +14,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,16 +28,30 @@ public class TaskController {
 
     // 태스크 생성
     @PostMapping
-    public ResponseEntity<TaskResDto> createTask(@RequestBody @Valid TaskReqDto request) {
+    public ResponseEntity<CreateApiResDto> createTask(@RequestBody @Valid TaskReqDto request) {
         Long authorId = 1L;
-        TaskResDto response = taskService.createTask(request, authorId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        taskService.createTask(request, authorId);
+
+        CreateApiResDto response = CreateApiResDto.builder()
+                .status(200)
+                .message("테스크 생성되었습니다.")
+                .authorId(authorId)
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
     // 단건 조회
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResDto> getTask(@PathVariable Long id) {
-        return ResponseEntity.ok(taskService.getTask(id));
+    public ResponseEntity<ReadApiResDto<TaskResDto>> getTask(@PathVariable Long id) {
+        TaskResDto task = taskService.getTask(id);
+
+        ReadApiResDto<TaskResDto> response = ReadApiResDto.<TaskResDto>builder()
+                .message("태스크 조회가 완료되었습니다.")
+                .data(task)
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
     // 전체 조회
@@ -69,11 +85,18 @@ public class TaskController {
 
     // 태스크 수정
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResDto> updateTask(
+    public ResponseEntity<UpdateApiResDto<TaskResDto>> updateTask(
             @PathVariable Long id,
-            @RequestBody @Valid TaskUpdateReqDto request) {
+            @RequestBody @Valid TaskUpdateReqDto request
+    ) {
+        TaskResDto updatedTask = taskService.updateTask(id, request);
 
-        TaskResDto response = taskService.updateTask(id, request);
+        UpdateApiResDto<TaskResDto> response = UpdateApiResDto.<TaskResDto>builder()
+                .success(true)
+                .message("요청이 성공했습니다.")
+                .data(updatedTask)
+                .build();
+
         return ResponseEntity.ok(response);
 
     }

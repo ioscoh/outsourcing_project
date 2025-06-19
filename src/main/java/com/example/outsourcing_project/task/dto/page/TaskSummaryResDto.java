@@ -14,4 +14,5 @@ public class TaskSummaryResDto {
     private Status status;
     private Long assigneeId;
     private LocalDateTime createdAt;
+
 }
