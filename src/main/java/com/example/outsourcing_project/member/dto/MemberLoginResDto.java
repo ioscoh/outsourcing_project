@@ -1,0 +1,12 @@
+package com.example.outsourcing_project.member.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class MemberLoginResDto {
+    private final int    status;      // 200
+    private final String message;     // "로그인 완료되었습니다."
+    private final String JWTToken;    // "Bearer …"
+}
