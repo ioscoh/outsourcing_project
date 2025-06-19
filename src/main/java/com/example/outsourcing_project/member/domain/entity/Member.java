@@ -1,18 +1,21 @@
 package com.example.outsourcing_project.member.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "members")
 public class Member {
+    //속
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +34,7 @@ public class Member {
     private Role role;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean isDeleted = false;
 
     private LocalDateTime deletedAt;
@@ -41,9 +45,43 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @PrePersist
+    public void onCreate() {
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+    @PreUpdate
+    public void onUpdate() {
+
+        this.updatedAt = LocalDateTime.now(ZoneOffset.UTC);
+    }
+
+    //기
     public enum Role {
         ADMIN, USER, MANAGER
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class MemberLeaveDto {
+        //속
+        private int status; // 200
+        private String message; //탈퇴 완료 메세지
+        private Long id;
+
+        //생
+        public MemberLeaveDto(Member member, String message, Long id) {
+            this.id = member.getId();
+            this.message = getMessage();
+            this.status = getStatus();
+        }
+
+        //기
+
+    }
+
+
 
 
 }
