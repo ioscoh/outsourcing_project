@@ -1,6 +1,6 @@
 package com.example.outsourcing_project.task.entity;
 
-import com.example.outsourcing_project.member.domain.entity.Member;
+import com.example.outsourcing_project.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

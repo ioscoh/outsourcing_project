@@ -1,4 +1,4 @@
-package com.example.outsourcing_project.member.domain.entity;
+package com.example.outsourcing_project.member.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

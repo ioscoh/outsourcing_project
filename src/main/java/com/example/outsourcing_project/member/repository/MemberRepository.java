@@ -1,4 +1,9 @@
-package com.example.outsourcing_project.member.domain.repository;
+package com.example.outsourcing_project.member.repository;
 
-public class MemberRepository {
+import com.example.outsourcing_project.member.entity.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+
+public interface MemberRepository extends JpaRepository<Member, Long> {
 }

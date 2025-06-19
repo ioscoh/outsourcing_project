@@ -1,7 +1,7 @@
 package com.example.outsourcing_project.activitylog.domain.entity;
 
 import com.example.outsourcing_project.comment.entity.Comment;
-import com.example.outsourcing_project.member.domain.entity.Member;
+import com.example.outsourcing_project.member.entity.Member;
 import com.example.outsourcing_project.task.entity.Task;
 import jakarta.persistence.*;
 import lombok.*;
