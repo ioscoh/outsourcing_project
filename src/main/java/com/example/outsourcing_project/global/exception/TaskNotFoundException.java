@@ -1,4 +1,4 @@
-package com.example.outsourcing_project.task.exception;
+package com.example.outsourcing_project.global.exception;
 
 public class TaskNotFoundException extends RuntimeException {
 

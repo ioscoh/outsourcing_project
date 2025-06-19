@@ -4,17 +4,21 @@ import com.example.outsourcing_project.member.repository.MemberRepository;
 import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.task.domain.entity.Task;
 import com.example.outsourcing_project.task.domain.enums.Priority;
-import com.example.outsourcing_project.task.domain.enums.Status;
 import com.example.outsourcing_project.task.dto.TaskReqDto;
 import com.example.outsourcing_project.task.dto.TaskResDto;
+import com.example.outsourcing_project.task.dto.api.StatusUpdateApiResDto;
+import com.example.outsourcing_project.task.dto.deleted.DeletedTaskResDto;
+import com.example.outsourcing_project.task.dto.status.TaskStatusUpdateReqDto;
 import com.example.outsourcing_project.task.dto.updete.TaskUpdateReqDto;
-import com.example.outsourcing_project.task.exception.TaskNotFoundException;
+import com.example.outsourcing_project.global.exception.TaskNotFoundException;
 import com.example.outsourcing_project.task.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,7 @@ import java.time.LocalDateTime;
 
 @Service
 @Getter
+@Setter
 @Builder
 @RequiredArgsConstructor
 @Transactional
@@ -123,19 +128,29 @@ public class TaskService {
     }
 
     // 상태 변경
-    public TaskResDto updateTaskStatus(Long id, String status) {
+    @Transactional
+    public StatusUpdateApiResDto updateTaskStatus(Long id, @Valid TaskStatusUpdateReqDto request) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException(id));
+                .filter(t -> !t.getIsDeleted())
+                .orElseThrow(() -> new EntityNotFoundException("해당 태스크가 존재하지 않습니다."));
 
-        task.updateStatus(Status.valueOf(status));
-        return TaskResDto.from(task);
+        return StatusUpdateApiResDto.builder()
+                .id(task.getId())
+                .status(task.getStatus().name())
+                .updatedAt(task.getUpdatedAt())
+                .build();
     }
 
     // 태스크 삭제
     @Transactional
-    public void deleteTask(Long id) {
-        Task task = findTask(id);
+    public DeletedTaskResDto deleteTask(Long taskId) {
+        Task task = findTask(taskId);
         task.setIsDeleted(true);
+        task.setDeletedAt(LocalDateTime.now());
+        taskRepository.save(task);
+
+        return new DeletedTaskResDto(task.getDeletedAt());
     }
+
 
 }

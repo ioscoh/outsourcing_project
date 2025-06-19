@@ -1,10 +1,10 @@
 package com.example.outsourcing_project.task.controller;
 
+import com.example.outsourcing_project.task.domain.entity.Task;
 import com.example.outsourcing_project.task.domain.enums.Status;
 import com.example.outsourcing_project.task.dto.*;
-import com.example.outsourcing_project.task.dto.api.CreateApiResDto;
-import com.example.outsourcing_project.task.dto.api.ReadApiResDto;
-import com.example.outsourcing_project.task.dto.api.UpdateApiResDto;
+import com.example.outsourcing_project.task.dto.api.*;
+import com.example.outsourcing_project.task.dto.deleted.DeletedTaskResDto;
 import com.example.outsourcing_project.task.dto.page.PagedTaskResDto;
 import com.example.outsourcing_project.task.dto.page.TaskSummaryResDto;
 import com.example.outsourcing_project.task.dto.status.TaskStatusUpdateReqDto;
@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequiredArgsConstructor
@@ -63,12 +65,12 @@ public class TaskController {
         Page<TaskResDto> taskPage = taskService.searchTasks(search, pageable);
 
         List<TaskSummaryResDto> taskList = taskPage.getContent().stream()
-                .map(task -> TaskSummaryResDto.builder()
-                        .id(task.getId())
-                        .title(task.getTitle())
-                        .status(Status.valueOf(task.getStatus()))
-                        .assigneeId(task.getAssigneeId())
-                        .createdAt(task.getCreatedAt())
+                .map(taskResDto -> TaskSummaryResDto.builder()
+                        .id(taskResDto.getId())
+                        .title(taskResDto.getTitle())
+                        .status(Status.valueOf(taskResDto.getStatus()))
+                        .assigneeId(taskResDto.getAssigneeId())
+                        .createdAt(taskResDto.getCreatedAt())
                         .build())
                 .toList();
 
@@ -103,19 +105,30 @@ public class TaskController {
 
     // 상태 변경
     @PatchMapping("/{id}/status")
-    public ResponseEntity<TaskResDto> updateTaskStatus(
+    public ResponseEntity<DeleteApiResDto<?>> updateTaskStatus(
             @PathVariable Long id,
             @RequestBody @Valid TaskStatusUpdateReqDto request) {
 
-        TaskResDto response = taskService.updateTaskStatus(id, request.getStatus());
-        return ResponseEntity.ok(response);
+        StatusUpdateApiResDto result = taskService.updateTaskStatus(id, request);
+        return ResponseEntity.ok(DeleteApiResDto.builder()
+                .status(200)
+                .message("태스크 상태가 변경되었습니다.")
+                .data(result)
+                .build());
     }
 
     // 태스크 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<DeleteApiResDto<?>> deleteTask(@PathVariable Long id) {
+        DeletedTaskResDto result = taskService.deleteTask(id);
+
+        DeleteApiResDto<DeletedTaskResDto> response = DeleteApiResDto.<DeletedTaskResDto>builder()
+                        .status(200)
+                        .message("태스크가 삭제되었습니다.")
+                        .data(result)
+                        .build();
+
+        return ResponseEntity.ok(response);
     }
 
 
