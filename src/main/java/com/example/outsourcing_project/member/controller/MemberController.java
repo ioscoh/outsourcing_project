@@ -1,5 +1,6 @@
 package com.example.outsourcing_project.member.controller;
 
+import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.member.dto.*;
 import com.example.outsourcing_project.member.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,9 @@ public class MemberController {
      */
     //서비스에서 정상 값을 저장한걸 불러와서 성공을 알리는 로직 쓰기
     @PostMapping("/signup")
-    public  ResponseEntity<MemberJoinResDto> memberJoinController(@RequestBody MemberJoinReqDto memberJoinReqDto) {
+    public  ResponseEntity<MemberJoinResDto> memberJoinController(
+            @RequestBody MemberJoinReqDto memberJoinReqDto
+    ) {
 
         MemberJoinResDto memberJoinResDto = memberService.memberJoinService(memberJoinReqDto);
          return new ResponseEntity<>(memberJoinResDto, HttpStatus.OK);
@@ -41,19 +44,22 @@ public class MemberController {
     }
 
 
-    @PostMapping("/login")
-    public ResponseEntity<MemberLoginResDto> memberloginController(@RequestBody MemberLoginReqDto memberLoginReqDto){
-        String token = memberService.memberloginService(memberLoginReqDto);
-        MemberLoginResDto memberLoginResDto = new MemberLoginResDto(HttpStatus.OK.value(), "로그인 완료되었습니다.", token);
-        return ResponseEntity.ok(memberLoginResDto);
+    @GetMapping("/login")
+    public ResponseEntity<MemberLoginResDto> memberloginController(
+            @RequestBody MemberLoginReqDto memberLoginReqDto
+    ) {
+        MemberLoginResDto memberLoginResDto = memberService.memberloginService(memberLoginReqDto);
+
+
+        return new  ResponseEntity<>(memberLoginResDto, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<String> memberWithdrawalController(@PathVariable MemberWithdrawalReqDto withdrawalReqDto) {
-        System.out.println("withdrawalReqDto = " + withdrawalReqDto);
-        String password = withdrawalReqDto.getPassword();
-        System.out.println("password = " + password);
-        return new ResponseEntity<>("탈퇴", HttpStatus.OK);
+    //회원 탈퇴(삭제) api
+    @DeleteMapping("/{id}")
+    public void memberWithdrawalController(
+            @PathVariable MemberWithdrawalReqDto withdrawalReqDto
+    ) {
+
 
     }
 
@@ -61,3 +67,7 @@ public class MemberController {
 
 
 }
+//   System.out.println("withdrawalReqDto = " + withdrawalReqDto);
+//String password = withdrawalReqDto.getPassword();
+//        System.out.println("password = " + password);
+//        return new ResponseEntity<>("탈퇴", HttpStatus.OK);

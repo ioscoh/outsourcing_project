@@ -28,6 +28,7 @@ public class LoginJwtUtil {
     // 실제 서명에 사용되는 키 객체
     private static Key key;
 
+
     /**
      * 빈 초기화 메서드
      * - 애플리케이션 시작 시 비밀 키를 Base64로 디코딩하여 Key 객체를 초기화합니다.
@@ -63,21 +64,21 @@ public class LoginJwtUtil {
 
     /**
      * JWT 토큰을 생성합니다.
-     * @param username 사용자 이름
-     * @param  role 역할 (권한)
+     * @param id 사용자 고유 아이디
+     * @param role 역할 (권한)
      * @return 생성된 JWT 토큰
      */
-    public static String generateToken(String username, Member.Role role) {
+    public static String generateToken(Long id, Member.Role role) {
         Date date = new Date();
 
         return BEARER_PREFIX +
             Jwts.builder()
-                .setSubject(username) // 사용자 식별자 (ID)
-                .claim("auth", role.name()) // 사용자 권한 (역할)
-                .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간 설정
-                .setIssuedAt(date) // 발급 시간 설정
-                .signWith(key, signatureAlgorithm) // 비밀 키와 알고리즘으로 서명
-                .compact(); // JWT 토큰 생성
+                    .setSubject(String.valueOf(id))// 사용자 식별자 (PK ID)
+                    .claim("auth", role.name()) // 사용자 권한 (역할)
+                    .setExpiration(new Date(date.getTime() + TOKEN_TIME)) // 만료 시간 설정
+                    .setIssuedAt(date) // 발급 시간 설정
+                    .signWith(key, signatureAlgorithm) // 비밀 키와 알고리즘으로 서명
+                    .compact(); // JWT 토큰 생성
     }
     /**
      * JWT 토큰에서 역할(권한) 정보를 추출합니다.

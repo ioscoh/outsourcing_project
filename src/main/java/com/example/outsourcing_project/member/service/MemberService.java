@@ -8,8 +8,10 @@ import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.member.dto.MemberJoinReqDto;
 import com.example.outsourcing_project.member.dto.MemberJoinResDto;
 import com.example.outsourcing_project.member.dto.MemberLoginReqDto;
+import com.example.outsourcing_project.member.dto.MemberLoginResDto;
 import com.example.outsourcing_project.member.repository.MemberRepository;
 import com.example.outsourcing_project.task.domain.entity.Task;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
@@ -107,7 +109,7 @@ public MemberJoinResDto memberJoinService(MemberJoinReqDto memberJoinReqDto) {
 }
 
 
-    public String memberloginService(MemberLoginReqDto request) {
+    public MemberLoginResDto memberloginService(MemberLoginReqDto request) {
 
         String email = request.getEmail();
         String password = request.getPassword();
@@ -120,8 +122,14 @@ public MemberJoinResDto memberJoinService(MemberJoinReqDto memberJoinReqDto) {
         if (!passwordEncoder.matches(password, member.getPassword())) {
             throw new MemberException(MemberError.INVALID_PASSWORD);
         }
+
+        String token = LoginJwtUtil.generateToken(
+                member.getId(), member.getRole()
+        );
         //토큰 발급
-        return LoginJwtUtil.generateToken(member.getUsername(), member.getRole());
+        return new MemberLoginResDto(
+                HttpStatus.OK.value(), "로그인 완료되었습니다.", token, member.getId()
+        );
 
     }
 
