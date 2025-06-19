@@ -1,17 +1,16 @@
 package com.example.outsourcing_project.activitylog.dto;
 
+import com.example.outsourcing_project.member.domain.entity.Member;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.time.LocalDateTime;
+//테스크 생성 테스트 Dto
 @Getter
-@Setter
-public class ActivityLogReqDto {
-    private LocalDateTime timestamp;
-    private long userId;
+public class ActivityCreateTestDto {
+    private Member act_member_id;
     private String ip;
     private String method;
     private String url;
     private String activityType;
-    private long taskId;
+    private Long taskId;
+
 }

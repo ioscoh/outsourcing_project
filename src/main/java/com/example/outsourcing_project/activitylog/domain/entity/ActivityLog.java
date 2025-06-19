@@ -1,5 +1,6 @@
 package com.example.outsourcing_project.activitylog.domain.entity;
 
+import com.example.outsourcing_project.activitylog.dto.ActivityCreateTestDto;
 import com.example.outsourcing_project.comment.domain.entity.Comment;
 import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.task.domain.entity.Task;
@@ -19,11 +20,11 @@ public class ActivityLog {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDateTime timestemp;
+    private LocalDateTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "act_user_id")
-    private Member actUser;
+    @JoinColumn(name = "act_member_id")
+    private Member actMember;
 
     @Column(nullable = false, length = 50)
     private String ipAddress;
@@ -49,9 +50,28 @@ public class ActivityLog {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    // 태스크 생성 테스트 생성자
+    public ActivityLog(ActivityCreateTestDto activityCreateTestDto, Task task, Comment comment, Member member) {
+        this.actMember = activityCreateTestDto.getAct_member_id();
+        this.timestamp = LocalDateTime.now();
+        this.ipAddress = activityCreateTestDto.getIp();
+        this.method = activityCreateTestDto.getMethod();
+        this.url = activityCreateTestDto.getUrl();
+        this.activityType = activityCreateTestDto.getActivityType();
+        this.task = task;
+        this.comment = comment;
+        this.member = member;
+    }
 
-
-
-
-
+    public ActivityLog(LocalDateTime timeStamp, Member act_user_id, String ipAddress, String method, String url, String activityType) {
+        this.actMember = act_user_id;
+        this.timestamp = timeStamp;
+        this.ipAddress = ipAddress;
+        this.method = method;
+        this.url = url;
+        this.activityType = activityType;
+        this.task = task;
+        this.comment = comment;
+        this.member = member;
+    }
 }

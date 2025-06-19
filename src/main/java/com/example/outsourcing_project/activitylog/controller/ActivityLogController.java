@@ -1,10 +1,9 @@
 package com.example.outsourcing_project.activitylog.controller;
 
+import com.example.outsourcing_project.activitylog.dto.ActivityCreateTestDto;
+import com.example.outsourcing_project.activitylog.dto.ActivityLogListResDto;
 import com.example.outsourcing_project.activitylog.service.ActivityLogService;
-import jakarta.persistence.Id;
 import org.springframework.web.bind.annotation.*;
-
-import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/ActivityLogs")
@@ -16,10 +15,14 @@ public class ActivityLogController {
         this.activityLogService = activityLogService;
     }
 
-    @GetMapping("/logs")
-    public String getActivityLog(@RequestParam long id) {
-
-        return "process";
+    @PostMapping("/logtestcreate")
+    public void logcreatetest(@RequestBody ActivityCreateTestDto activityCreateTestDto) {
+        activityLogService.createtest(activityCreateTestDto);
     }
 
+    @GetMapping("/Logs")
+    public ActivityLogListResDto getActivityLogs(@RequestParam Long memberId) {
+        ActivityLogListResDto activityLogListResDto = activityLogService.getAllActivityLogs();
+        return activityLogListResDto;
+    }
 }

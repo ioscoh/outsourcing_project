@@ -1,5 +1,7 @@
 package com.example.outsourcing_project.task.service;
 
+import com.example.outsourcing_project.activitylog.domain.entity.ActivityLog;
+import com.example.outsourcing_project.activitylog.repository.ActivityLogRepository;
 import com.example.outsourcing_project.member.repository.MemberRepository;
 import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.task.domain.entity.Task;
@@ -23,8 +25,9 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final MemberRepository memberRepository;
+    private final ActivityLogRepository activityLogRepository;
 
-    public TaskResDto createTask(TaskReqDto dto, Long authorId) {
+    public TaskResDto createTask(TaskReqDto dto, Long authorId, String ip) {
         Member assignee = memberRepository.findById(dto.getAssigneeId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 담당자가 존재하지 않습니다."));
         Member author = memberRepository.findById(authorId)
@@ -43,7 +46,21 @@ public class TaskService {
                 .isDeleted(false)
                 .build();
 
-        taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+        // 1 엔티티 준비하기
+        //요청시간
+        LocalDateTime timeStamp = LocalDateTime.now();
+        //활동한 사용자 Id
+        Member act_user_id = savedTask.getAuthorId();
+        //사용 메서드
+        String method = "POST";
+        //url 주소
+        String url = "/tasks";
+        //ActivityType
+        String activityType = "TASK_CREATED";
+        //객체화 후 로그 리포짓에 저장
+        ActivityLog activityLog = new ActivityLog(timeStamp, act_user_id, ip, method, url, activityType);
+        activityLogRepository.save(activityLog);
 
         return toDto(task);
     }
