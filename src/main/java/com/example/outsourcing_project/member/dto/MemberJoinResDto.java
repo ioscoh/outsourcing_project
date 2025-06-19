@@ -14,6 +14,7 @@ package com.example.outsourcing_project.member.dto;
 
 import com.example.outsourcing_project.global.exception.MemberError;
 import com.example.outsourcing_project.task.domain.entity.Task;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter

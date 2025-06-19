@@ -33,6 +33,7 @@ public class Member {
     private Role role;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean isDeleted = false;
 
     private LocalDateTime deletedAt;
@@ -43,8 +44,11 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+
+
+
     @PrePersist
-    public void onCreat() {
+    public void onCreate() {
         LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
         this.createdAt = now;
         this.updatedAt = now;
