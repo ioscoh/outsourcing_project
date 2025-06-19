@@ -22,8 +22,8 @@ public class ActivityLog {
     private LocalDateTime timestemp;
 
     @ManyToOne
-    @JoinColumn(name = "act_user_id")
-    private Member actUser;
+    @JoinColumn(name = "act_member_id")
+    private Member actMember;       // 멤버로 변경
 
     @Column(nullable = false, length = 50)
     private String ipAddress;

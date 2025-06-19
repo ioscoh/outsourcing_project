@@ -1,5 +1,6 @@
 package com.example.outsourcing_project.task.dto;
 
+import com.example.outsourcing_project.task.domain.entity.Task;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,4 +22,18 @@ public class TaskResDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public static TaskResDto from(Task task) {
+        return TaskResDto.builder()
+                .id(task.getId())
+                .title(task.getTitle())
+                .description(task.getDescription())
+                .priority(task.getPriority().name())
+                .status(task.getStatus().name())
+                .authorId(task.getAuthor().getId())
+                .assigneeId(task.getAssignee() != null ? task.getAssignee().getId() : null)
+                .dueDate(task.getDueDate())
+                .createdAt(task.getCreatedAt())
+                .updatedAt(task.getUpdatedAt())
+                .build();
+    }
 }
