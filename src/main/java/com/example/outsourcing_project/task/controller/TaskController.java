@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/tasks")
