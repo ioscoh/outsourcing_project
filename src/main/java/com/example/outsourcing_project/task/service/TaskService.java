@@ -4,6 +4,7 @@ import com.example.outsourcing_project.member.repository.MemberRepository;
 import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.task.domain.entity.Task;
 import com.example.outsourcing_project.task.domain.enums.Priority;
+import com.example.outsourcing_project.task.domain.enums.Status;
 import com.example.outsourcing_project.task.dto.TaskReqDto;
 import com.example.outsourcing_project.task.dto.TaskResDto;
 import com.example.outsourcing_project.task.dto.api.StatusUpdateApiResDto;
@@ -133,6 +134,8 @@ public class TaskService {
         Task task = taskRepository.findById(id)
                 .filter(t -> !t.getIsDeleted())
                 .orElseThrow(() -> new EntityNotFoundException("해당 태스크가 존재하지 않습니다."));
+
+        task.setStatus(Status.valueOf(String.valueOf(request.getStatus())));    // 상태 변경 로직 추가
 
         return StatusUpdateApiResDto.builder()
                 .id(task.getId())
