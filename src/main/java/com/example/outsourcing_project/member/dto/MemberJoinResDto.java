@@ -14,6 +14,7 @@ package com.example.outsourcing_project.member.dto;
 
 import com.example.outsourcing_project.global.exception.MemberError;
 import com.example.outsourcing_project.task.domain.entity.Task;
+import com.example.outsourcing_project.task.domain.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,7 +22,7 @@ import lombok.Getter;
 public class MemberJoinResDto {
 
     //속
-    private final Task.Status status;
+    private final Status status;
     private final String message;
     private final Long id;
 
@@ -30,7 +31,7 @@ public class MemberJoinResDto {
 
 
     //생
-    public MemberJoinResDto(Task.Status status, String message, Long id) {
+    public MemberJoinResDto(Status status, String message, Long id) {
         this.status = status;
         this.message = message;
         this.id = id;
