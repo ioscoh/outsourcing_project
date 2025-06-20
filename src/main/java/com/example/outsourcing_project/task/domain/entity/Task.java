@@ -4,6 +4,7 @@ import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.task.domain.enums.Priority;
 import com.example.outsourcing_project.task.domain.enums.Status;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -33,11 +34,11 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "assignee_id")
-    private Member assigneeId;
+    private Member assignee;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private Member authorId;
+    private Member author;
 
     private LocalDate dueDate;
 
@@ -45,7 +46,7 @@ public class Task {
     @Column(nullable = false)
     private Status status;
 
-    private LocalDateTime startedAt;
+    private LocalDate startedAt;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -65,6 +66,22 @@ public class Task {
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public void update(String title, String description, Priority priority, LocalDate dueDate, Member assignee) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.dueDate = dueDate;
+        this.assignee = assignee;
+    }
+
+    public void updateStatus(Status status) {
+        this.status = status;
     }
 
 
