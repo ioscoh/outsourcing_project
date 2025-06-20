@@ -1,17 +1,20 @@
-package com.example.outsourcing_project.task.entity;
+package com.example.outsourcing_project.task.domain.entity;
 
-import com.example.outsourcing_project.member.entity.Member;
+import com.example.outsourcing_project.member.domain.entity.Member;
+import com.example.outsourcing_project.task.domain.enums.Priority;
+import com.example.outsourcing_project.task.domain.enums.Status;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "tasks")
 public class Task {
     @Id
@@ -30,15 +33,16 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "assignee_id")
-    private Member assignee;
+    private Member assigneeId;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private Member author;
+    private Member authorId;
 
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Status status;
 
     private LocalDateTime startedAt;
@@ -48,17 +52,20 @@ public class Task {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
     private LocalDateTime deletedAt;
 
     @Column(nullable = false)
     private Boolean isDeleted = false;
 
-    public enum Priority {
-        HIGH, MEDIUM, LOW
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    public enum Status {
-        TODO, IN_PROGRESS, DONE
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
+
+
 }
