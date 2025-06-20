@@ -1,6 +1,5 @@
-package com.example.outsourcing_project.member.entity;
+package com.example.outsourcing_project.member.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

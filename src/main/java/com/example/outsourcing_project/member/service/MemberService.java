@@ -8,6 +8,7 @@ import com.example.outsourcing_project.member.domain.entity.Member;
 import com.example.outsourcing_project.member.dto.*;
 import com.example.outsourcing_project.member.repository.MemberRepository;
 import com.example.outsourcing_project.task.domain.entity.Task;
+import com.example.outsourcing_project.task.domain.enums.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
@@ -112,7 +113,7 @@ public MemberJoinResDto memberJoinService(MemberJoinReqDto memberJoinReqDto) {
     memberRepository.save(member);
    //성공시 아래 로직 반환됩니다.
 
-    return new MemberJoinResDto(Task.Status.DONE, "회원가입 완료되었습니다.", member.getId());
+    return new MemberJoinResDto(Status.DONE, "회원가입 완료되었습니다.", member.getId());
 }
 
 
